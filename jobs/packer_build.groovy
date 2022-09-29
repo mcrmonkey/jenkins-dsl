@@ -1,6 +1,12 @@
 freeStyleJob('packer_build') {
-    displayName('Build image')
+    displayName('Build packer image')
     description('Build packer images')
+
+    parameters {
+        choiceParam('ENV', ['dev', 'test', 'prod'])
+        choiceParam('IMAGE', ['base', 'web'])
+    }
+
 
     checkoutRetryCount(3)
 
@@ -41,7 +47,7 @@ freeStyleJob('packer_build') {
     }
 
     steps {
-        shell('cd packer && make')
+        shell('cd packer && make ENV=${ENV} IMAGE=${IMAGE} build')
     }
 
     publishers {
